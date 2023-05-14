@@ -58,19 +58,19 @@
                   <div class="five fields">
                     <div class="six wide field">
                       <label>Descrição</label>
-                      <input type="text" v-model="transaction.description">
+                      <input type="text" name="description" v-model="transaction.description">
                     </div>
                     <div class="three wide field">
                       <label>Valor</label>
-                      <input type="number" v-model="transaction.value">
+                      <input type="number" name="value" v-model="transaction.value">
                     </div>
                     <div class="four wide field">
                       <label>Data</label>
-                      <input type="date" v-model="transaction.date">
+                      <input type="date" name="date" v-model="transaction.date">
                     </div>
                     <div class="four wide field">
                       <label>Tipo</label>
-                      <select class="ui fluid dropdown" v-model="transaction.type">
+                      <select name="type" class="ui fluid dropdown" v-model="transaction.type">
                         <option value="1">Entrada</option>
                         <option value="2">Saída</option>
                       </select>
@@ -103,14 +103,14 @@
                       <th>Remover</th>
                     </tr>
                   </thead>
-                  <tbody v-if="transactions.length > 0" class="text-center">
+                  <tbody v-if="transactions.length > 0" class="text-center" id="main-tbody">
                     <tr v-for="(transact, index) of transactions" :key="index" :class="returnText(transact, 'class')">
                       <td>{{ returnText(transact, 'description') }}</td>
                       <td>{{ returnText(transact, 'value') }}</td>
                       <td>{{ returnText(transact, 'date') }}</td>
                       <td>{{ returnText(transact, 'type') }}</td>
                       <td class="text-center">
-                        <button class="ui inverted red button" @click.prevent="removeTransaction(index)"> 
+                        <button id="remove-transaction" class="ui inverted red button" @click.prevent="removeTransaction(index)"> 
                           <i class="trash alternate outline icon m-0"></i>
                         </button>
                       </td>
@@ -159,20 +159,20 @@ function checkTransaction () {
   }
   if (showMessage) {
     showAlert.value = true
-    setTimeout(() => {showAlert.value = false}, 7000)
+    setTimeout(() => {showAlert.value = false}, 6000)
   } else {
     saveTransaction()
   }
 }
 
-function saveTransaction () {
-  transactions.push(transaction)
-  transaction = {description: '', value: '', date: '', type: 1}
+function removeTransaction (index: number) {
+  transactions.splice(index, 1)
   saveStorage()
 }
 
-function removeTransaction (index: number) {
-  transactions.splice(index, 1)
+function saveTransaction () {
+  transactions.push(transaction)
+  transaction = {description: '', value: '', date: '', type: 1}
   saveStorage()
 }
 
@@ -195,16 +195,6 @@ function calculateTotal () {
   updateKey.value++
 }
 
-function formatValue (value: number): string {
-  let format = value.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})
-  return format
-}
-
-function formatDate (date: string): string {
-  let format = date.split('-').reverse().join('/')
-  return format
-}
-
 function returnText (transact: any, type: string): string {
   let text = ''
   if (type === 'class') {
@@ -219,6 +209,16 @@ function returnText (transact: any, type: string): string {
     text = transact.type === 1 ? 'Entrada' : 'Saída'
   }
   return text
+}
+
+function formatValue (value: number): string {
+  let format = value.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})
+  return format
+}
+
+function formatDate (date: string): string {
+  let format = date.split('-').reverse().join('/')
+  return format
 }
 
 onMounted(() => {
