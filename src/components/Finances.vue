@@ -104,11 +104,11 @@
                     </tr>
                   </thead>
                   <tbody v-if="transactions.length > 0" class="text-center">
-                    <tr v-for="(transact, index) of transactions" :key="index" :class="transact.type === 1 ? 'positive' : 'negative'">
-                      <td>{{ transact.description }}</td>
-                      <td>{{ formatValue(transact.value) }}</td>
-                      <td>{{ formatDate(transact.date) }}</td>
-                      <td>{{ transact.type === 1 ? 'Entrada' : 'Saída' }}</td>
+                    <tr v-for="(transact, index) of transactions" :key="index" :class="returnText(transact, 'class')">
+                      <td>{{ returnText(transact, 'description') }}</td>
+                      <td>{{ returnText(transact, 'value') }}</td>
+                      <td>{{ returnText(transact, 'date') }}</td>
+                      <td>{{ returnText(transact, 'type') }}</td>
                       <td class="text-center">
                         <button class="ui inverted red button" @click.prevent="removeTransaction(index)"> 
                           <i class="trash alternate outline icon m-0"></i>
@@ -184,13 +184,13 @@ function saveStorage () {
 function calculateTotal () {
   inboundTransaction.value = 0
   outboundTransaction.value = 0
-  // transactions.forEach(function(element) {
-  //   if (element.type === 1) {
-  //     inboundTransaction.value += element.value
-  //   } else {
-  //     outboundTransaction.value += element.value
-  //   }
-  // })
+  transactions.forEach(function(element: any) {
+    if (element.type === 1) {
+      inboundTransaction.value += element.value
+    } else {
+      outboundTransaction.value += element.value
+    }
+  })
   total.value = inboundTransaction.value - outboundTransaction.value
   updateKey.value++
 }
@@ -203,6 +203,22 @@ function formatValue (value: number): string {
 function formatDate (date: string): string {
   let format = date.split('-').reverse().join('/')
   return format
+}
+
+function returnText (transact: any, type: string): string {
+  let text = ''
+  if (type === 'class') {
+    text = transact.type === 1 ? 'positive' : 'negative'
+  } else if (type === 'description') {
+    text = transact.description
+  } else if (type === 'value') {
+    text = formatValue(transact.value)
+  } else if (type === 'date') {
+    text = formatDate(transact.date)
+  } else if (type === 'type') {
+    text = transact.type === 1 ? 'Entrada' : 'Saída'
+  }
+  return text
 }
 
 onMounted(() => {
