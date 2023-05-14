@@ -79,9 +79,9 @@ describe('my.finance app', () => {
       cy.get('.btn-add button').click()
       cy.get('#main-tbody tr').should('have.length', 2)
 
-      cy.contains('teste dois de entrada').parent().find('#remove-transaction').click()
+      cy.contains('teste tres de entrada').parent().find('#remove-transaction').click()
       cy.get('#main-tbody tr').should('have.length', 1)
-      cy.contains('teste dois de saida').parent().find('#remove-transaction').click()
+      cy.contains('teste tres de saida').parent().find('#remove-transaction').click()
       cy.get('#main-tbody tr').should('have.length', 0)
     })
 })
