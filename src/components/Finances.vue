@@ -184,13 +184,13 @@ function saveStorage () {
 function calculateTotal () {
   inboundTransaction.value = 0
   outboundTransaction.value = 0
-  transactions.forEach(function(element) {
-    if (element.type === 1) {
-      inboundTransaction.value += element.value
-    } else {
-      outboundTransaction.value += element.value
-    }
-  })
+  // transactions.forEach(function(element) {
+  //   if (element.type === 1) {
+  //     inboundTransaction.value += element.value
+  //   } else {
+  //     outboundTransaction.value += element.value
+  //   }
+  // })
   total.value = inboundTransaction.value - outboundTransaction.value
   updateKey.value++
 }
