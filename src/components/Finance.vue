@@ -1,8 +1,5 @@
 <template>
   <section>
-    <div v-if="showAlert" class="alert">
-      <p>{{ message }}</p>
-    </div>
     <div class="ui m-0 container fluid bg-green">
       <h2 class="text-center m-0 p-top color-white">
         my<span class="color-green-light">.</span>finances<span class="color-green-light">$</span>
@@ -135,31 +132,29 @@
 
 <script setup lang="ts">
 import { ref, reactive, onMounted } from 'vue'
+import { alertStore } from '../store/alertStore'
 
+const alert = alertStore()
 let transaction = reactive({description: '', value: '', date: '', type: 1})
 let transactions: object[] = reactive([])
 let inboundTransaction = ref(0)
 let outboundTransaction = ref(0)
 let total = ref(0)
 let updateKey = ref(0)
-let message = ref('')
-let showAlert = ref(false)
 
 function checkTransaction () {
-  let showMessage = false
+  let messageAlert = ''
   if (!transaction.description) {
-    message.value = 'Por favor insira a descrição para adicionar a transação'
-    showMessage = true
+    messageAlert = 'Por favor insira a descrição para adicionar a transação'
   } else if (!transaction.value) {
-    message.value = 'Por favor insira o valor para adicionar a transação'
-    showMessage = true
+    messageAlert = 'Por favor insira o valor para adicionar a transação'
   } else if (!transaction.date) {
-    message.value = 'Por favor insira a data para adicionar a transação'
-    showMessage = true
+    messageAlert = 'Por favor insira a data para adicionar a transação'
   }
-  if (showMessage) {
-    showAlert.value = true
-    setTimeout(() => {showAlert.value = false}, 6000)
+  if (messageAlert.length) {
+    alert.setShowAlert(true)
+    alert.setMessageAlert(messageAlert)
+    setTimeout(() => {alert.setShowAlert(false)}, 6000)
   } else {
     saveTransaction()
   }
@@ -305,18 +300,6 @@ onMounted(() => {
   margin-top: 10px;
 }
 
-.alert {
-  position: fixed; 
-  bottom: 15px; 
-  right: 15px;
-  z-index: 5;
-  background-color: #ffb7be;
-  border: 3px solid #f5c6cb;;
-  border-radius: 5px;
-  padding: 10px 20px;
-  color: #721c24;
-  font-size: 13px;
-}
 .btn-add {
   position: relative; 
   top: 24px; 

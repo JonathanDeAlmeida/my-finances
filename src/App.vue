@@ -1,9 +1,11 @@
 <script setup lang="ts">
-import Finances from './components/Finances.vue'
+import Finance from './components/Finance.vue'
+import Alert from './components/Alert.vue'
 </script>
 
 <template>
-  <Finances />
+  <Finance />
+  <Alert />
 </template>
 
 <style scoped>
