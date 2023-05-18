@@ -135,8 +135,10 @@ import { ref, reactive, onMounted } from 'vue'
 import { alertStore } from '../store/alertStore'
 
 const alert = alertStore()
-let transaction = reactive({description: '', value: '', date: '', type: 1})
-let transactions: object[] = reactive([])
+interface ITransaction {description: string, value: string, date: string, type: number}
+const objTransaction: ITransaction = {description: '', value: '', date: '', type: 1}
+let transactions: ITransaction[] = reactive([objTransaction])
+let transaction = reactive(objTransaction)
 let inboundTransaction = ref(0)
 let outboundTransaction = ref(0)
 let total = ref(0)
@@ -179,11 +181,12 @@ function saveStorage () {
 function calculateTotal () {
   inboundTransaction.value = 0
   outboundTransaction.value = 0
-  transactions.forEach(function(element: any) {
-    if (element.type === 1) {
-      inboundTransaction.value += element.value
+  transactions.forEach(function(transact) {
+    let value = parseFloat(transact.value)
+    if (transact.type === 1) {
+      inboundTransaction.value += value
     } else {
-      outboundTransaction.value += element.value
+      outboundTransaction.value += value
     }
   })
   total.value = inboundTransaction.value - outboundTransaction.value
