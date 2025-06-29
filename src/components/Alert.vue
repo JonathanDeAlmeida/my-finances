@@ -24,7 +24,7 @@ console.log(messageAlert)
   border-radius: 5px;
   padding: 10px 20px;
   color: #721c24;
-  font-size: 13px;
+  font-size: 14px;
 }
 
 </style>
